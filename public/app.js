@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const productForm = document.getElementById('productForm');
+  const Form = document.getElementById('productForm');
   const itemTable = document.getElementById('itemTable').getElementsByTagName('tbody')[0];
 
   //Form submission event handler
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(product => {
           // Clear the form
-          productForm.reset();
+          Form.reset();
           console.log('Product added:', product);
       })
       
