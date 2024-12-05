@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const itemTable = document.getElementById('itemTable').getElementsByTagName('tbody')[0];
 
   //Form submission event handler
-  itemForm.addEventListener('submit', function(event) {
+  productForm.addEventListener('submit', function(event) {
       event.preventDefault(); 
 
   const name = document.getElementById('productName').value;
@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function fetchItem() {
       fetch('http://localhost:3000/product')
       .then(response => response.json())
-      .then(item => {
+      .then(product => {
           // Clear the table first
           itemTable.innerHTML = '';
 
           // Populate the table with  data
-          item.forEach(item => {
+          item.forEach(product => {
           const row = itemTable.insertRow();
           row.innerHTML = 
               `<td>${item.item_ID}</td>

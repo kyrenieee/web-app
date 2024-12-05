@@ -30,7 +30,7 @@ const createTableIfNotExists = () => {
 createTableIfNotExists();
 
 
-exports.getAllproduct = (callback) => {
+const getAllproduct = (callback) => {
   db.all('SELECT * FROM product', [], (err, rows) => {
     if (err) {
       return callback(err);
@@ -39,15 +39,19 @@ exports.getAllproduct = (callback) => {
   });
 };
 
-
 // Function to add new
-exports.addproduct = (productID,productName,productPrice,callback) => {
+const addproduct = (productID,productName,productPrice,callback) => {
   const stmt = db.prepare('INSERT INTO product (productID,productName,productPrice) VALUES (?, ?, ? )');
   stmt.run([productID,productName,productPrice], function (err) {
     if (err) {
       return callback(err);
     }
-    callback(null, { productID: this.lastID,firstName,lastName,Quantity});
+    callback(null, { productID: this.lastID,productName,productPrice});
   });
   stmt.finalize();
+};
+
+module.exports = {
+  getAllproduct,
+  addproduct
 };
