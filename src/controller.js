@@ -1,4 +1,4 @@
-const database = require('../src/assets/database.mjs')
+const database = require('../src/assets/database.js')
     
 //add new product
 
