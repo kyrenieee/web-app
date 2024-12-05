@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
 
-// Open the SQLite database
 const db = new sqlite3.Database('./Xip.db', (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
@@ -9,13 +8,12 @@ const db = new sqlite3.Database('./Xip.db', (err) => {
   }
 });
 
-// Function to create the 'customer' table if it doesn't exist
 const createTableIfNotExists = () => {
   const createTableSQL = `
     CREATE TABLE IF NOT EXISTS product (
     productID INTEGER PRIMARY KEY AUTOINCREMENT,
     productName TEXT NOT NULL,
-    productPrice REAL NOT NULL
+    productPrice INT NOT NULL
     );`
     ;
   
@@ -23,12 +21,12 @@ const createTableIfNotExists = () => {
     if (err) {
       console.error('Error creating table:', err.message);
     } else {
-      console.log('Table "customers , product" is ready (created or already exists).');
+      console.log('Table "product" is ready (created or already exists).');
     }
   });
 };
 
-// Call the function to ensure the table is created
+
 createTableIfNotExists();
 
 
@@ -44,7 +42,7 @@ exports.getAllproduct = (callback) => {
 
 // Function to add new
 exports.addproduct = (productID,productName,productPrice,callback) => {
-  const stmt = db.prepare('INSERT INTO Customers (productID,productName,productPrice) VALUES (?, ?, ? )');
+  const stmt = db.prepare('INSERT INTO product (productID,productName,productPrice) VALUES (?, ?, ? )');
   stmt.run([productID,productName,productPrice], function (err) {
     if (err) {
       return callback(err);

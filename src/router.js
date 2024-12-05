@@ -8,5 +8,5 @@ const controller = require('./controller.js'); // Import controller
 router.get('/product',controller.getAllproduct);
 
 // Route to add 
-router.post('/customer', controller.addproduct);
+router.post('/product', controller.addproduct);
 module.exports = router;

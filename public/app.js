@@ -1,51 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const userForm = document.getElementById('userForm');
-    const usersTable = document.getElementById('usersTable').getElementsByTagName('tbody')[0];
-  
-    // Fetch users and update the table
-    function fetchUsers() {
-      fetch('/users')
-        .then(response => response.json())
-        .then(users => {
-          // Clear the table first
-          usersTable.innerHTML = '';
-  
-          // Populate the table with user data
-          users.forEach(user => {
-            const row = usersTable.insertRow();
-            row.innerHTML = `
-              <td>${user.id}</td>
-              <td>${user.name}</td>
-              <td>${user.email}</td>
-            `;
-          });
-        })
-        .catch(error => console.error('Error fetching users:', error));
-    }
-  
-    // Add user via form submission
-    userForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent page reload
-  
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-  
-      // Send POST request to add a new user
-      fetch('/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email })
+  const productForm = document.getElementById('productForm');
+  const itemTable = document.getElementById('itemTable').getElementsByTagName('tbody')[0];
+
+  //Form submission event handler
+  itemForm.addEventListener('submit', function(event) {
+      event.preventDefault(); 
+
+  const name = document.getElementById('productName').value;
+  const price = document.getElementById('productPrice').value;
+      console.log({ name, price });
+
+      // Send POST request to add a new item
+      fetch('http://localhost:3000/product', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, price})
       })
-        .then(response => response.json())
-        .then(user => {
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(product => {
           // Clear the form
-          userForm.reset();
-          // Refresh the user list
-          fetchUsers();
-        })
-        .catch(error => console.error('Error adding user:', error));
-    });
-  
-    // Initially fetch and display users
-    fetchUsers();
+          productForm.reset();
+          console.log('Product added:', product);
+      })
+      
+      .catch(error => {
+          console.error('Error adding product:', error);
+          alert('Failed to add product. Please try again.');
+      });
   });
+  // Fetch Item and update the table
+  function fetchItem() {
+      fetch('http://localhost:3000/product')
+      .then(response => response.json())
+      .then(item => {
+          // Clear the table first
+          itemTable.innerHTML = '';
+
+          // Populate the table with  data
+          item.forEach(item => {
+          const row = itemTable.insertRow();
+          row.innerHTML = 
+              `<td>${item.item_ID}</td>
+              <td>${item.Name}</td>
+              <td>${item.Price}</td>`
+          });
+      })
+      .catch(error => console.error('Error fetching:', error));
+  }
+  fetchItem();
+});
