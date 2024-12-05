@@ -1,6 +1,6 @@
-import express from 'express';
-import path from 'path';
-import route from './router.mjs'; 
+const express = require ('express');
+const path = require ('path');
+const route = require ('./router.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,7 +11,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-app.use('/customer', route);
 app.use('/product', route);
 
 // Start the server
