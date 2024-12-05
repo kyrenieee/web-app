@@ -1,8 +1,8 @@
 const product = require('./assets/database.js'); 
 
 // Get all items from the database
-exports.getAllproduct = (req, res) => {
-    product.getAllproduct((err, product) => {
+exports.getProduct = (req, res) => {
+    product.getProduct((err, product) => {
         if (err) {
             return res.status(500).send(err.message);
         }
@@ -11,21 +11,21 @@ exports.getAllproduct = (req, res) => {
 };
 
 // Add a new item to the database
-exports.addproduct = (req, res) => {
+exports.addProduct = (req, res) => {
     console.log('Request body:', req.body); // Log the request body
-    const { productName, productPrice} = req.body;
+    const { Name, Price } = req.body;
 
-    //validation
-    if (!productName || !price) {
+    // Validation
+    if (!Name || !Price) {
         return res.status(400).send('All fields are required.');
     }
 
-    const quantityNumber = parseInt(productPrice, 10);
+    const quantityNumber = parseInt(Price, 10);
     if (isNaN(quantityNumber)) {
         return res.status(400).send('Price must be a number.');
     }
 
-    product.addproduct(productName, quantityNumber, (err, product) => {
+    product.addProduct(null, Name, quantityNumber, (err, product) => {
         if (err) {
             console.error("Error adding product:", err.message);
             return res.status(500).send(err.message);
