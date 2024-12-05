@@ -1,36 +1,24 @@
 const sqlite3 = require('sqlite3').verbose();
-
-const db = new sqlite3.Database('./Xip.db', (err) => {
-  if (err) {
-    console.error('Error opening database:', err.message);
-  } else {
-    console.log('Connected to SQLite database.');
-  }
+const db = new sqlite3.Database('./ItemBase.db', (err) => {
+    if (err) {
+        return console.error("Error opening database " + err.message);
+    } else {
+        console.log("Connected to database");
+        db.run(`CREATE TABLE IF NOT EXISTS product (
+        productID INTEGER PRIMARY KEY AUTOINCREMENT,
+        productName TEXT NOT NULL,
+        productPrice INT NOT NULL
+        )`, (err) => {
+            if (err) {
+                return console.error("error adding constraint" + err.message);
+            } else {
+                console.log("Items Table created or already exists");
+            }
+        });
+    }
 });
 
-const createTableIfNotExists = () => {
-  const createTableSQL = `
-    CREATE TABLE IF NOT EXISTS product (
-    productID INTEGER PRIMARY KEY AUTOINCREMENT,
-    productName TEXT NOT NULL,
-    productPrice INT NOT NULL
-    );`
-    ;
-  
-  db.run(createTableSQL, (err) => {
-    if (err) {
-      console.error('Error creating table:', err.message);
-    } else {
-      console.log('Table "product" is ready (created or already exists).');
-    }
-  });
-};
-
-
-createTableIfNotExists();
-
-
-const getAllproduct = (callback) => {
+const getProduct = (callback) => {
   db.all('SELECT * FROM product', [], (err, rows) => {
     if (err) {
       return callback(err);
@@ -40,18 +28,18 @@ const getAllproduct = (callback) => {
 };
 
 // Function to add new
-const addproduct = (productID,productName,productPrice,callback) => {
-  const stmt = db.prepare('INSERT INTO product (productID,productName,productPrice) VALUES (?, ?, ? )');
-  stmt.run([productID,productName,productPrice], function (err) {
+const addProduct = (productID,productName,productPrice,callback) => {
+  const sql ='INSERT INTO product (productID,productName,productPrice) VALUES (?, ?, ? )';
+  db.run(sql,[productID,productName,productPrice], function (err) {
     if (err) {
       return callback(err);
     }
+    console.log("Inserted Product with ID:", this.lastID);
     callback(null, { productID: this.lastID,productName,productPrice});
   });
-  stmt.finalize();
 };
 
 module.exports = {
-  getAllproduct,
-  addproduct
+  getProduct,
+  addProduct
 };
